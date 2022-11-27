@@ -1,0 +1,18 @@
+version: "3.7"
+services:
+  db:
+    container_name: postgres
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: point_sys
+      POSTGRES_USER: point_admin
+      POSTGRES_PASSWORD: point_123456
+      PGDATA: /var/lib/postgresql/data
+    ports:
+      - "1432:1432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:
