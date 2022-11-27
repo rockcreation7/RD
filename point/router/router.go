@@ -36,5 +36,12 @@ func SetupRoutes(app *fiber.App) {
 	pointSys := api.Group("/point")
 	pointSys.Post("/", handler.CreateWallet)
 	pointSys.Get("/", handler.ListWallet)
+	
 
+	organization := api.Group("/org")
+	organization.Post("/", handler.CreateOrg)
+	organization.Get("/", handler.GetOrg)
+	organization.Post("/op", handler.CreateOrg)
+	organization.Get("/op", handler.GetOrg)
+	
 }
