@@ -14,7 +14,7 @@ func main() {
 	app.Use(cors.New())
 
 	app.Static("/", "web")
-
+	app.Static("/register/org", "web/register_org.html")
 	database.ConnectDB()
 
 	router.SetupRoutes(app)

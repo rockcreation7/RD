@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register Organization</title>
+  </head>
+  <body>
+    <form id="addorg">
+      <h2>Register Organization</h2>
+      <input
+        type="text"
+        name="orgname"
+        required
+        placeholder="Enter organization Name"
+      />
+      <input
+        type="text"
+        name="email"
+        required
+        placeholder="Enter organization email"
+      />
+      <input
+        type="password"
+        name="password"
+        required
+        placeholder="Enter password"
+      />
+      <button onclick="">Submit</button>
+    </form>
+  </body>
+  <script>
+    const addOrgform = document.getElementById("addorg")
+    addOrgform.addEventListener("submit", (event) => {
+      // stop form submission
+      event.preventDefault()
+      const form = document.getElementById("addorg")
+      const name = form.elements["orgname"].value
+      const email = form.elements["email"].value
+      const password = form.elements["password"].value
+
+      let data = { org: name, email: email, password: password }
+
+      fetch("/api/org", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          console.log("Request complete! response:", JSON.stringify(res))
+        })
+        .catch((err) => {
+          console.log("Request fail! response:", err)
+        })
+    })
+  </script>
+</html>
