@@ -5,7 +5,6 @@ import (
 	"api-fiber-gorm/database"
 	"api-fiber-gorm/model"
 	"errors"
-	"fmt"
 	"time"
 
 	"gorm.io/gorm"
@@ -92,8 +91,8 @@ func LoginOrg(c *fiber.Ctx) error {
 	claims["org_id"] = ud.ID
 	claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
 
-	fmt.Println(config.Config("SECRET"), "config.Config")
-
+	// fmt.Println(config.Config("SECRET"), "config.Config")
+	// fmt.Println(claims)
 	t, err := token.SignedString([]byte(config.Config(config.Config("SECRET"))))
 	if err != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)
