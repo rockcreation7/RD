@@ -113,7 +113,7 @@ func Login(c *fiber.Ctx) error {
 
 	token := jwt.New(jwt.SigningMethodHS256)
 
-	claims := token.Claims.(jwt.MapClaims) 
+	claims := token.Claims.(jwt.MapClaims)
 	claims["username"] = ud.Username
 	claims["user_id"] = ud.ID
 	claims["exp"] = time.Now().Add(time.Hour * 72).Unix()

@@ -40,7 +40,8 @@ func SetupRoutes(app *fiber.App) {
 	organization := api.Group("/org")
 	organization.Post("/", handler.CreateOrg)
 	organization.Get("/", handler.GetOrg)
-	organization.Post("/op", handler.CreateOrg)
-	organization.Get("/op", handler.GetOrg)
+	/* 	organization.Post("/op", handler.CreateOrg)
+	   	organization.Get("/op", handler.GetOrg) */
+	organization.Post("/login", handler.LoginOrg)
 
 }

@@ -13,8 +13,8 @@ type User struct {
 
 type Org struct {
 	gorm.Model
-	Orgname  string `gorm:"unique_index;not null" json:"org"`
-	Email    string `gorm:"unique_index;not null" json:"email"`
+	Orgname  string `gorm:"not null" json:"org"`
+	Email    string `gorm:"unique;not null" json:"email"`
 	Password string `gorm:"not null" json:"password"`
 }
 

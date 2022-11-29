@@ -29,10 +29,25 @@
       />
       <button onclick="">Submit</button>
     </form>
+    <form id="loginorg">
+      <h2>Login Organization</h2>
+      <input
+        type="text"
+        name="email"
+        required
+        placeholder="Enter organization email"
+      />
+      <input
+        type="password"
+        name="password"
+        required
+        placeholder="Enter password"
+      />
+      <button onclick="">Submit</button>
+    </form>
   </body>
   <script>
-    const addOrgform = document.getElementById("addorg")
-    addOrgform.addEventListener("submit", (event) => {
+    document.getElementById("addorg").addEventListener("submit", (event) => {
       // stop form submission
       event.preventDefault()
       const form = document.getElementById("addorg")
@@ -43,6 +58,30 @@
       let data = { org: name, email: email, password: password }
 
       fetch("/api/org", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          console.log("Request complete! response:", JSON.stringify(res))
+        })
+        .catch((err) => {
+          console.log("Request fail! response:", err)
+        })
+    })
+    //////
+    
+    document.getElementById("loginorg").addEventListener("submit", (event) => {
+      // stop form submission
+      event.preventDefault()
+      const form = document.getElementById("loginorg") 
+      const email = form.elements["email"].value
+      const password = form.elements["password"].value 
+
+      let data = {email: email, password: password }
+
+      fetch("/api/org/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
