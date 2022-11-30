@@ -6,11 +6,14 @@ import (
 	"errors"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/golang-jwt/jwt/v4"
 	"gorm.io/gorm"
 )
 
- 
 func CreateWallet(c *fiber.Ctx) error {
+	user := c.Locals("user").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+
 	wallet := &model.MemberWallet{}
 
 	if err := c.BodyParser(wallet); err != nil {
@@ -20,8 +23,8 @@ func CreateWallet(c *fiber.Ctx) error {
 	wallet = &model.MemberWallet{
 		MemberName: wallet.MemberName,
 		Point:      0,
-		ScanCode:   wallet.Point,
-		OrgID:      wallet.OrgID,
+		ScanCode:   wallet.ScanCode,
+		OrgID:      int(claims["org_id"].(float64)),
 	}
 
 	if err := database.DB.Create(&wallet).Error; err != nil {
@@ -33,7 +36,7 @@ func CreateWallet(c *fiber.Ctx) error {
 
 // require super admin
 func ListWallet(c *fiber.Ctx) error {
-	var wallets []model.MemberWallet 
+	var wallets []model.MemberWallet
 
 	if err := database.DB.Find(&wallets).Limit(1000).Error; err != nil {
 		return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Error on Finding wallet", "data": err})
@@ -84,7 +87,7 @@ func deductWalletPoint(c *fiber.Ctx) error {
 
 	scanCode := wallet.ScanCode
 	point := wallet.Point
-	orgID := wallet.OrgID 
+	orgID := wallet.OrgID
 	// Todo : Move to pool
 	if err := database.DB.Transaction(func(tx *gorm.DB) error {
 		tx.Begin()

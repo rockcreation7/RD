@@ -10,7 +10,7 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/v4"
 )
 
 func getOrgByEmail(e string) (*model.Org, error) {
@@ -93,7 +93,7 @@ func LoginOrg(c *fiber.Ctx) error {
 
 	// fmt.Println(config.Config("SECRET"), "config.Config")
 	// fmt.Println(claims)
-	t, err := token.SignedString([]byte(config.Config(config.Config("SECRET"))))
+	t, err := token.SignedString([]byte(config.Config("SECRET")))
 	if err != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}

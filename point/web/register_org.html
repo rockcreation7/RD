@@ -45,8 +45,26 @@
       />
       <button onclick="">Submit</button>
     </form>
+    <form id="walletCreate">
+      <h2>Create Wallet</h2>
+      <input
+        type="text"
+        name="member_name"
+        required
+        placeholder="Member Name"
+      />
+      <input
+        type="number"
+        name="scan_code"
+        required
+        placeholder="Scan Code"
+      />
+      <input type="submit" />
+    </form>
   </body>
   <script>
+    let token
+
     document.getElementById("addorg").addEventListener("submit", (event) => {
       // stop form submission
       event.preventDefault()
@@ -71,15 +89,15 @@
         })
     })
     //////
-    
+
     document.getElementById("loginorg").addEventListener("submit", (event) => {
       // stop form submission
       event.preventDefault()
-      const form = document.getElementById("loginorg") 
+      const form = document.getElementById("loginorg")
       const email = form.elements["email"].value
-      const password = form.elements["password"].value 
+      const password = form.elements["password"].value
 
-      let data = {email: email, password: password }
+      let data = { email: email, password: password }
 
       fetch("/api/org/login", {
         method: "POST",
@@ -89,10 +107,58 @@
         .then((res) => res.json())
         .then((res) => {
           console.log("Request complete! response:", JSON.stringify(res))
+          token = res.data
         })
         .catch((err) => {
           console.log("Request fail! response:", err)
         })
     })
+
+    document
+      .getElementById("walletCreate")
+      .addEventListener("submit", (event) => {
+        // stop form submission
+        event.preventDefault()
+
+        let target = event.target
+        let formData = {}
+
+        for (let i = 0; i < target.length; i++) {
+          const ele = target.elements[i]
+          let key = ele.getAttribute("name")
+          const type = ele.getAttribute("type")
+          if (key === null) {
+            continue
+          }
+          if (type === "number") {
+            formData[key] = parseInt(ele.value)
+            continue
+          }
+          formData[key] = ele.value
+        }
+        console.log("formData", formData)
+
+        if (token === "") {
+          alert("Login First")
+          return
+        }
+        const form = document.getElementById("walletCreate")
+        console.log(token)
+        fetch("/api/point", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token,
+          },
+          body: JSON.stringify(formData),
+        })
+          .then((res) => res.json())
+          .then((res) => {
+            console.log("Request complete! response:", JSON.stringify(res))
+          })
+          .catch((err) => {
+            console.log("Request fail! response:", err)
+          })
+      })
   </script>
 </html>

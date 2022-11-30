@@ -6,10 +6,10 @@ import "gorm.io/gorm"
 type MemberWallet struct {
 	gorm.Model
 	MemberName string `gorm:"not null" json:"member_name"`
-	Point      int    `gorm:"not null" json:"point"`
-	ScanCode   int    `gorm:"not null" json:"scan_code"`
-	Active     bool   `gorm:"not null" json:"-"`
-	OrgID      int    `gorm:"not null" json:"-"`
+	Point      int    `gorm:"not null"`
+	ScanCode   int    `gorm:"unique;not null" json:"scan_code"`
+	Active     bool   `gorm:"not null"`
+	OrgID      int    `gorm:"not null"`
 	Org        Org
 }
 type TransactionLog struct {
@@ -20,5 +20,5 @@ type TransactionLog struct {
 	Type          int    `gorm:"not null" json:"type"`
 	BalanceBefore int    `gorm:"not null" json:"balance_before"`
 	OrgID         int    `gorm:"not null" json:"-"`
-	Org        Org
+	Org           Org
 }

@@ -34,7 +34,7 @@ func SetupRoutes(app *fiber.App) {
 
 	// Point
 	pointSys := api.Group("/point")
-	pointSys.Post("/", handler.CreateWallet)
+	pointSys.Post("/", middleware.Protected(), handler.CreateWallet)
 	pointSys.Get("/", handler.ListWallet)
 
 	organization := api.Group("/org")
