@@ -13,16 +13,16 @@ void handleSignal(int signal);
 
 int main()
 {
-  /*   WalletList walletList;
+    /*   WalletList walletList;
 
-    // Use the walletList object and its member functions
-    walletList.addWallet("Alice", 100);
-    walletList.addWallet("Bob", 50);
-    walletList.addWallet("Charlie", 200);
+      // Use the walletList object and its member functions
+      walletList.addWallet("Alice", 100);
+      walletList.addWallet("Bob", 50);
+      walletList.addWallet("Charlie", 200);
 
-    int aliceBalance = walletList.getBalance("Alice");
+      int aliceBalance = walletList.getBalance("Alice");
 
-    walletList.printAllWallets(); */
+      walletList.printAllWallets(); */
 
     int serverSocket;
     struct sockaddr_in serverAddress, clientAddress;
@@ -58,6 +58,33 @@ int main()
 
         // Print received data
         std::cout << "Received: " << buffer << std::endl;
+        char userId[20];
+        char operation[20];
+
+        // std::string message(buffer, bytesRead);
+        // std::string userId, operation;
+        int amount;
+
+        // std::string input = "112233 + 10";
+        std::sscanf(buffer, "%s %s %d", &userId, &operation, &amount);
+        // userId = buffer;
+
+        // Process the operation
+        if (operation[0] == *"+")
+        {
+            std::cout << "User ID: " << userId << ", Amount: " << amount << ", operation: " << operation << std::endl;
+            // Process addition logic here
+        }
+        else if (operation[0] == *"-")
+        {
+            std::cout << "User ID: " << userId << ", Amount: " << amount << ", operation: " << operation << std::endl;
+            // Process subtraction logic here
+        }
+        else
+        {
+            std::cout << "User ID: " << userId << ", Amount: " << amount << ", operation: " << operation << std::endl;
+            std::cout << "Invalid operation" << std::endl;
+        }
 
         char clientIP[INET_ADDRSTRLEN];
         inet_ntop(AF_INET, &(clientAddress.sin_addr), clientIP, INET_ADDRSTRLEN);
@@ -86,9 +113,11 @@ void handleSignal(int signal)
 /*
 
 g++ udp_client.cpp -o udp_client
+./udp_client
+
 g++ udp_server.cpp -o udp_server
 
 
 g++ udp_server.cpp WalletList.cpp -o udp_server
-
+./udp_server
 */
