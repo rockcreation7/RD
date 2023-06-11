@@ -5,6 +5,7 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <cstring>
+#include "WalletList.h"
 
 bool isRunning = true;
 
@@ -12,6 +13,17 @@ void handleSignal(int signal);
 
 int main()
 {
+  /*   WalletList walletList;
+
+    // Use the walletList object and its member functions
+    walletList.addWallet("Alice", 100);
+    walletList.addWallet("Bob", 50);
+    walletList.addWallet("Charlie", 200);
+
+    int aliceBalance = walletList.getBalance("Alice");
+
+    walletList.printAllWallets(); */
+
     int serverSocket;
     struct sockaddr_in serverAddress, clientAddress;
     char buffer[1024];
@@ -75,5 +87,8 @@ void handleSignal(int signal)
 
 g++ udp_client.cpp -o udp_client
 g++ udp_server.cpp -o udp_server
+
+
+g++ udp_server.cpp WalletList.cpp -o udp_server
 
 */
