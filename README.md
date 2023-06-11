@@ -1,2 +1,2 @@
 # RD
-Example on nats
+Research and development
