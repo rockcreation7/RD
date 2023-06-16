@@ -9,7 +9,7 @@
 int main() {
     int clientSocket;
     struct sockaddr_in serverAddress;
-    char buffer[1024*4];
+    char buffer[1024];
 
     // Create socket
     if ((clientSocket = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
