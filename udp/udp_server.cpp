@@ -9,7 +9,8 @@
 
 bool isRunning = true;
 
-void handleSignal(int signal);
+void handle_signal(int signal);
+int format_response(char *buffer, int balance, int amount, char operation, char userId[]);
 
 int main()
 {
@@ -23,7 +24,7 @@ int main()
       int aliceBalance = walletList.getBalance("Alice");
 
       walletList.printAllWallets(); */
-
+    WalletList walletList;
     int serverSocket;
     struct sockaddr_in serverAddress, clientAddress;
     char buffer[1024];
@@ -59,8 +60,8 @@ int main()
         // Print received data
         std::cout << "Received: " << buffer << std::endl;
         char userId[20];
-        char operation[20];
-
+        char operation;
+        int resp_size;
         // std::string message(buffer, bytesRead);
         // std::string userId, operation;
         int amount;
@@ -69,22 +70,50 @@ int main()
         std::sscanf(buffer, "%s %s %d", &userId, &operation, &amount);
         // userId = buffer;
 
-        // Process the operation
-        if (operation[0] == *"+")
+        switch (operation)
         {
+        case '?':
+            std::cout << "User ID Balance: " << walletList.getBalance(userId) << std::endl;
+            resp_size = format_response(buffer, walletList.getBalance(userId), 0, operation, userId);
+            break;
+        case '+':
             std::cout << "User ID: " << userId << ", Amount: " << amount << ", operation: " << operation << std::endl;
-            // Process addition logic here
-        }
-        else if (operation[0] == *"-")
-        {
+            walletList.addWallet(userId, amount);
+            resp_size = format_response(buffer, walletList.getBalance(userId), amount, operation, userId);
+            break;
+        case '-':
             std::cout << "User ID: " << userId << ", Amount: " << amount << ", operation: " << operation << std::endl;
-            // Process subtraction logic here
-        }
-        else
-        {
+            walletList.addWallet(userId, -amount);
+            resp_size = format_response(buffer, walletList.getBalance(userId), amount, operation, userId);
+            break;
+        default:
             std::cout << "User ID: " << userId << ", Amount: " << amount << ", operation: " << operation << std::endl;
+            // std::snprintf(buffer, sizeof(buffer), "success balance %d operation %c amount %d user %s ", walletList.getBalance(userId), operation, amount, userId);
+            resp_size = format_response(buffer, walletList.getBalance(userId), amount, operation, userId);
             std::cout << "Invalid operation" << std::endl;
         }
+
+        std::cout << "debug " << buffer << std::endl;
+
+        /*
+            // Process the operation
+            if (operation[0] == *"+")
+            {
+                std::cout << "User ID: " << userId << ", Amount: " << amount << ", operation: " << operation << std::endl;
+                walletList.addWallet(userId, 100);
+                // Process addition logic here
+            }
+            else if (operation[0] == *"-")
+            {
+                std::cout << "User ID: " << userId << ", Amount: " << amount << ", operation: " << operation << std::endl;
+                // Process subtraction logic here
+            }
+            else
+            {
+                std::cout << "User ID: " << userId << ", Amount: " << amount << ", operation: " << operation << std::endl;
+                std::cout << "Invalid operation" << std::endl;
+            }
+        */
 
         char clientIP[INET_ADDRSTRLEN];
         inet_ntop(AF_INET, &(clientAddress.sin_addr), clientIP, INET_ADDRSTRLEN);
@@ -92,7 +121,7 @@ int main()
         printf("Client address: %s:%d\n", clientIP, clientPort);
 
         // Echo back to client
-        sendto(serverSocket, buffer, bytesRead, 0, (struct sockaddr *)&clientAddress, clientAddressLength);
+        sendto(serverSocket, buffer, resp_size, 0, (struct sockaddr *)&clientAddress, clientAddressLength);
     }
 
     // Close socket
@@ -101,13 +130,18 @@ int main()
     return 0;
 }
 
-void handleSignal(int signal)
+void handle_signal(int signal)
 {
     if (signal == SIGINT)
     {
         std::cout << "Ctrl+C signal received. Exiting..." << std::endl;
         isRunning = false;
     }
+}
+
+int format_response(char *buffer, int balance, int amount, char operation, char userId[])
+{
+    return std::snprintf(buffer, 1024, "success balance %d operation %c amount %d user %s ", balance, operation, amount, userId);
 }
 
 /*
@@ -120,4 +154,7 @@ g++ udp_server.cpp -o udp_server
 
 g++ udp_server.cpp WalletList.cpp -o udp_server
 ./udp_server
+
+112233 + 10
+
 */
