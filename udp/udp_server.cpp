@@ -112,17 +112,4 @@ int format_response(char *buffer, int balance, int amount, char operation, char 
     return std::snprintf(buffer, buffer_size, "success balance %d operation %c amount %d user %s ", balance, operation, amount, userId);
 }
 
-/*
-Test
-
-g++ udp_client.cpp -o udp_client
-./udp_client
-
-g++ udp_server.cpp -o udp_server
-
-g++ udp_server.cpp WalletList.cpp -o udp_server
-./udp_server
-
-112233 + 10
-
-*/
+ 
