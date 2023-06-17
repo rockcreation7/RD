@@ -56,30 +56,27 @@ int main()
         int resp_size;
         int amount;
 
-        std::sscanf(buffer, "%s %s %d", &userId, &operation, &amount);
+        std::sscanf(buffer, "%s %s %d", userId, &operation, &amount);
 
         switch (operation)
         {
         case '?':
-            std::cout << "User ID Balance: " << walletList.getBalance(userId) << std::endl;
-            resp_size = format_response(buffer, walletList.getBalance(userId), 0, operation, userId);
+            std::cout << "User ID Balance: " << walletList.getBalance(userId) << std::endl; 
             break;
         case '+':
             std::cout << "User ID: " << userId << ", Amount: " << amount << ", operation: " << operation << std::endl;
             walletList.addWallet(userId, amount);
-            resp_size = format_response(buffer, walletList.getBalance(userId), amount, operation, userId);
             break;
         case '-':
             std::cout << "User ID: " << userId << ", Amount: " << amount << ", operation: " << operation << std::endl;
-            walletList.addWallet(userId, -amount);
-            resp_size = format_response(buffer, walletList.getBalance(userId), amount, operation, userId);
+            walletList.addWallet(userId, -amount); 
             break;
         default:
-            std::cout << "User ID: " << userId << ", Amount: " << amount << ", operation: " << operation << std::endl;
-            // std::snprintf(buffer, sizeof(buffer), "success balance %d operation %c amount %d user %s ", walletList.getBalance(userId), operation, amount, userId);
-            resp_size = format_response(buffer, walletList.getBalance(userId), amount, operation, userId);
+            std::cout << "User ID: " << userId << ", Amount: " << amount << ", operation: " << operation << std::endl; 
             std::cout << "Invalid operation" << std::endl;
         }
+
+        resp_size = format_response(buffer, walletList.getBalance(userId), amount, operation, userId);
 
         std::cout << "debug " << buffer << std::endl;
 
