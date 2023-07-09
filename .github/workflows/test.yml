@@ -14,10 +14,8 @@ jobs:
         with:
           go-version: '1.19'
 
-      - name: Build
-        run: cd grace
-        run: go build -v ./grace/...
+      - name: Build 
+        run: cd grace & go build -v ./grace/...
 
       - name: Test
-        run: cd grace
-        run: go test -v ./grace/...
+        run: cd grace & go test -v ./grace/...
