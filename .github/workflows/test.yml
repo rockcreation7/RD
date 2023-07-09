@@ -19,3 +19,6 @@ jobs:
 
       - name: Test
         run: cd grace && go test -v ./...
+
+      - name: Build Docker
+        run: cd grace && docker build -t my-golang-app .
