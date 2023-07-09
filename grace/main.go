@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"database/sql"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -42,7 +41,7 @@ func getHello(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 
-	// Connection parameters
+	/* // Connection parameters
 	host := "localhost"
 	port := 5432
 	user := "postgres"
@@ -103,7 +102,7 @@ func main() {
 	if err = rows.Err(); err != nil {
 		panic(err)
 	}
-
+	*/
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/", getRoot)
