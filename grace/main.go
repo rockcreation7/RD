@@ -19,7 +19,7 @@ import (
 
 func getRoot(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("got / request\n")
-	io.WriteString(w, "This is my website!\n")
+	io.WriteString(w, "This is my website 2!\n")
 }
 
 func getHello(w http.ResponseWriter, r *http.Request) {
