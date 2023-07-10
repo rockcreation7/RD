@@ -21,4 +21,6 @@ jobs:
         run: cd grace && go test -v ./...
 
       - name: Build Docker
-        run: cd grace && docker build -t my-golang-app .
+        run: cd grace && docker build -t my-golang-app . && docker login -p ${{ secrets.DOCKERHUB_PASSWORD }} -u ${{ secrets.DOCKERHUB_USERNAME }}
+
+ 
