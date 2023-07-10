@@ -21,6 +21,6 @@ jobs:
         run: cd grace && go test -v ./...
 
       - name: Build Docker
-        run: cd grace && docker build -t my-golang-app . && docker login -p ${{ secrets.DOCKERHUB_PASSWORD }} -u ${{ secrets.DOCKERHUB_USERNAME }} && docker tag my-golang-app:latest ${{ secrets.DOCKERHUB_USERNAME }}/rd:v1.1-release
+        run: cd grace && docker build -t my-golang-app . && docker login -p ${{ secrets.DOCKERHUB_PASSWORD }} -u ${{ secrets.DOCKERHUB_USERNAME }} && docker tag my-golang-app:latest ${{ secrets.DOCKERHUB_USERNAME }}/rd:v1.1-release && docker push rock707/rd:my-running-app
 
  
