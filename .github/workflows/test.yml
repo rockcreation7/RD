@@ -28,7 +28,7 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
-          DOCKER_TAG: v${{ steps.get-commit-hash.outputs.commit_hash }}
+          DOCKER_TAG: ${{ steps.get-commit-hash.outputs.commit_hash }}
         run: |
           cd grace &&
           docker build -t my-golang-app . 
