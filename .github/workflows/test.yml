@@ -20,15 +20,15 @@ jobs:
       - name: Test
         run: cd grace && go test -v ./...
 
-      - name: Get Git commit hash
-        id: get-commit-hash
-        run: echo "::set-output name=commit_hash::$(git rev-parse --short HEAD)"
-
+      - name: Generate tag
+        id: generate-tag
+        run: echo "::set-output name=tag::$(git describe --abbrev=0 --tags)"
+  
       - name: Build Docker
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-          DOCKER_TAG: ${{ steps.get-commit-hash.outputs.commit_hash }}
+          DOCKER_TAG: ${{ steps.generate-tag.outputs.tag }}
         run: |
           cd grace &&
           docker build -t my-golang-app . &&
