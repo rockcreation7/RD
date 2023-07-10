@@ -19,15 +19,20 @@ jobs:
 
       - name: Test
         run: cd grace && go test -v ./...
+
+      - name: Get Git commit hash
+        id: get-commit-hash
+        run: echo "::set-output name=commit_hash::$(git rev-parse --short HEAD)"
   
       - name: Build Docker
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+          DOCKER_TAG: v${{ steps.get-commit-hash.outputs.commit_hash }}
         run: |
           cd grace &&
           docker build -t my-golang-app . 
           mkdir -p ~/.docker
           echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"auth\":\"$(echo -n "${DOCKER_USERNAME}:${DOCKER_PASSWORD}" | base64 -w 0)\"}}}" > ~/.docker/config.json
-          docker tag my-golang-app:latest "${DOCKER_USERNAME}"/rd:dev
-          docker push "${DOCKER_USERNAME}"/rd:dev
+          docker tag my-golang-app:latest ${DOCKER_USERNAME}/rd:${DOCKER_TAG}
+          docker push ${DOCKER_USERNAME}/rd:${DOCKER_TAG}
