@@ -32,6 +32,7 @@ jobs:
         run: |
           cd grace &&
           docker build -t my-golang-app . &&
-          echo "${DOCKER_PASSWORD}" | docker login --username ${DOCKER_USERNAME} --password-stdin
+          mkdir -p ~/.docker
+          echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"auth\":\"$(echo -n "${DOCKER_USERNAME}:${DOCKER_PASSWORD}" | base64 -w 0)\"}}}" > ~/.docker/config.json
           docker tag my-golang-app:latest ${DOCKER_USERNAME}/rd:${DOCKER_TAG}
           docker push ${DOCKER_USERNAME}/rd:${DOCKER_TAG}
