@@ -37,11 +37,28 @@ func (robota robota) recharge(request Request) string {
 	return s
 }
 
-func initgc() robotI {
+var robotList = map[string]robotI{}
+
+func init() {
+	// robotList["robota"] = initRobotI()
+	setRobot("robota", initRobotI)
+}
+
+func initRobotI() robotI {
 	return robota{
 		action: commonAction[string]{},
 		cpu:    cpu{},
 	}
+}
+
+type funcSignature func() robotI
+
+func setRobot(name string, initRobot funcSignature) {
+	robotList[name] = initRobot()
+}
+
+func getRobot(name string) robotI {
+	return robotList[name]
 }
 
 type commonAction[T any] struct {
@@ -55,17 +72,20 @@ func (common commonAction[T]) rechargeCommon(user string, sdk cpuI[T]) T {
 	v := sdk.attack(user)
 	switch any(v).(type) {
 	case string:
-		fmt.Println("Hello")
+		fmt.Println("is string")
 	}
 	return v
 }
 
 func main() {
-	gcI := initgc()
-	res := gcI.recharge(Request{
+	robotI := getRobot("robota")
+
+	res := robotI.recharge(Request{
 		user:   "peter",
 		amount: 10,
 	})
-	fmt.Println(res, "--- RES --- ")
+
+	fmt.Println(res, " --- RES --- ")
+
 	// recharge()
 }
