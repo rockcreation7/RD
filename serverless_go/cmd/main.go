@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
@@ -12,7 +13,7 @@ func handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.API
 
 	return events.APIGatewayProxyResponse{
 		StatusCode: 200,
-		Body:       message.Greet("World"),
+		Body:       message.Greet("World - Data : ") + fmt.Sprintf("%+v", req),
 	}, nil
 }
 
