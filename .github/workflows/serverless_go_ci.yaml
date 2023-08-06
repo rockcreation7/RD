@@ -14,19 +14,19 @@ jobs:
         go-version: 1.17
 
     - name: Verify dependencies
-      run: go mod verify
+      run: cd serverless_go && go mod verify
 
     - name: Build
-      run: make build
+      run: cd serverless_go && make build
 
     - name: Run go vet
-      run: go vet ./...
+      run: cd serverless_go && go vet ./...
 
     - name: Install golint
-      run: go install golang.org/x/lint/golint@latest
+      run: cd serverless_go && go install golang.org/x/lint/golint@latest
 
     - name: Run golint
-      run: golint ./...
+      run: cd serverless_go && golint ./...
 
     - name: Run tests
-      run: go test ./...
+      run: cd serverless_go && go test ./...
