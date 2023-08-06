@@ -1,2 +1,6 @@
 realworld*
 recipes
+serverless_go/terraform/.terraform.lock.hcl
+.gitignore
+serverless_go/terraform/.terraform/providers/registry.terraform.io/hashicorp/aws/3.76.1/linux_amd64/terraform-provider-aws_v3.76.1_x5
+serverless_go/terraform/.terraform/providers/registry.terraform.io/hashicorp/archive/2.2.0/linux_amd64/terraform-provider-archive_v2.2.0_x5
