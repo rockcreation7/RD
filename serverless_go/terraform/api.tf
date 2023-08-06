@@ -15,12 +15,12 @@ resource "aws_s3_bucket_object" "api_code_archive" {
   source = data.archive_file.api_code_archive.output_path
   etag   = filemd5(data.archive_file.api_code_archive.output_path)
 
-  lifecycle {
-    ignore_changes = [
-      etag,
-      version_id
-    ]
-  }
+  # lifecycle {
+  #  ignore_changes = [
+  #    etag,
+  #    version_id
+  #  ]
+  #}
 }
 
 resource "aws_lambda_function" "api_lambda" {
@@ -35,14 +35,14 @@ resource "aws_lambda_function" "api_lambda" {
   memory_size      = 128
   publish          = true
 
-  lifecycle {
-    ignore_changes = [
-      last_modified,
-      source_code_hash,
-      version,
-      environment
-    ]
-  }
+  # lifecycle {
+  #  ignore_changes = [
+  #    last_modified,
+  #    source_code_hash,
+  #    version,
+  #    environment
+  #  ]
+  # }
 }
 
 resource "aws_lambda_alias" "api_lambda_alias" {
