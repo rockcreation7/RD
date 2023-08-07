@@ -10,3 +10,4 @@ serverless_go/bootstrap
 *.tfstate
 *.1_x5
 *.0_x5
+serverless_go/testsam
