@@ -16,9 +16,7 @@ void exitWithError(const std::string &errorMessage)
     log("ERROR: " + errorMessage);
     exit(1);
 }
-struct Foo
-{
-};
+ 
 int main()
 {
     const int BUFFER_SIZE = 30720;
