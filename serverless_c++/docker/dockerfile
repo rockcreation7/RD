@@ -1,0 +1,25 @@
+# Use an existing base image
+FROM amazonlinux:latest
+
+# Run a command to create the hello.txt file in the container
+# RUN echo "Hello, Docker!2" > /hello.txt
+RUN yum -y groupinstall "Development tools" 
+RUN yum -y install gcc-c++ libcurl-devel cmake3 git
+RUN git clone https://github.com/awslabs/aws-lambda-cpp.git
+RUN cd aws-lambda-cpp && mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF \
+   -DCMAKE_INSTALL_PREFIX=~/out && make && make install
+
+RUN mkdir hello-cpp-world && cd hello-cpp-world && ls && pwd
+WORKDIR /hello-cpp-world
+COPY CMakeLists.txt .
+COPY main.cpp .
+RUN ls && mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=~/out && make && ls && cat Makefile && make aws-lambda-package-hello
+RUN ls && cd build && ls && pwd && pwd
+
+# Set a default command to run when the container starts
+CMD ["cat", "/hello.txt"]
+
+# docker build -t hello-docker2 . --progress=plain  #  --no-cache
+# docker run -d --name hello-container2 hello-docker2
+# docker cp hello-container2:/hello2.txt ./hello.txt /hello-cpp-world/build
+# docker cp hello-container2:/hello-cpp-world/build/hello.zip ./hello.zip
